@@ -1,14 +1,14 @@
-# gs-wagons
+### gs-wagons *ALL credit goes to original author, im just working on a version that works with RSG-Core v2 ###
+##### Currently doesnt fully work with Rsg-core v2 ##### Stand by for updates
  An updated version of jp-wagons
 
-**This a wagon script for RSGCore for RedM. I thought it was about time there was one specifically created for RSGCore, not just converted.**
+**This is a wagon script for RSGCore**
 
 **_Features;_**
 - Buy Multiple wagons
-- Trade wagons with other players
 - Sell your wagon for buyprice
-- Store your wagons if you don't need it out
-- Inventory/Storage system on the wagons that can be modified easily in config
+- Store your wagons 
+- Inventory/Storage system
 - Easy to modify config file
 
 
