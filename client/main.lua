@@ -67,7 +67,7 @@ Citizen.CreateThread(function()
             },
             {
                 icon = '',
-                label = 'View Wagon',
+                label = 'Activate Wagon',
                 targeticon = 'fas fa-eye',
                 action = function()
                     TriggerServerEvent('danglr-wagons:server:ownedwagons')
@@ -82,7 +82,7 @@ Citizen.CreateThread(function()
                     local distance = GetDistanceBetweenCoords(coords.x, coords.y, coords.z, wagonPos.x, wagonPos.y, wagonPos.z, true)
 
                     if spawnedWagon ~= nil then
-                        if distance <= 10 then
+                        if distance <= 30 then
                             DeleteVehicle(spawnedWagon)
                             spawnedWagon = nil
                             --RSGCore.Functions.Notify('You stored your wagon!', 'success', 3000)
