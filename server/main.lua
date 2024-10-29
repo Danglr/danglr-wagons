@@ -17,8 +17,8 @@ RegisterServerEvent('danglr-wagons:server:buywagon', function(name, price, model
         
         Player.Functions.RemoveMoney('cash', price)
     else
-        -- Here you could add a notification or feedback to the player that they do not have enough money
-        RSGCore.Functions.Notify('You dont have enough money!', 'error')
+        --RSGCore.Functions.Notify('You dont have enough money!', 'error')
+        TriggerClientEvent('rNotify:NotifyLeft', source, "You dont have enough money", "", "", "tick", 4000)
     end
 end)
 
@@ -85,7 +85,8 @@ AddEventHandler('danglr-wagons:server:spawnwagon', function()
                 TriggerClientEvent('danglr-wagons:client:spawnwagon', src, model, ownedCid, wagonid, storage, weight)
             end
         else
-            RSGCore.Functions.Notify(src, 'You don\'t have any active wagons!', 'error', 3000)
+            --RSGCore.Functions.Notify(src, 'You don\'t have any active wagons!', 'error', 3000)
+            TriggerClientEvent('rNotify:NotifyLeft', source, "You dont have any active wagons", "", "", "tick", 4000)
         end
     end)  
 end)
@@ -132,7 +133,8 @@ RegisterServerEvent('danglr-wagons:server:sellwagon', function(wagon)
                 end)
             end
         else
-            RSGCore.Functions.Notify(src, 'You don\'t have any active wagons!', 'error', 3000)
+            --RSGCore.Functions.Notify(src, 'You don\'t have any active wagons!', 'error', 3000)
+            TriggerClientEvent('rNotify:NotifyLeft', source, "No active wagons are out", "", "", "tick", 4000)
         end
     end)  
 end)
@@ -150,7 +152,8 @@ RegisterServerEvent('danglr-wagons:server:checkownedwagons', function(wagon)
                 TriggerClientEvent('danglr-wagons:client:updatewagonid', src, wagonid, cid)
             end
         else
-            RSGCore.Functions.Notify(src, 'You don\'t have any active wagons!', 'error', 3000)
+            --RSGCore.Functions.Notify(src, 'You don\'t have any active wagons!', 'error', 3000)
+            TriggerClientEvent('rNotify:NotifyLeft', source, "No active wagons are out", "", "", "tick", 4000)
         end
     end)  
 end)
@@ -169,6 +172,7 @@ RegisterServerEvent('danglr-wagons:server:tradewagon', function(id, wagon)
             print(affectedRows)
         end)
     else
-        RSGCore.Functions.Notify(src, 'No player found!', 'error', 3000)
+        --RSGCore.Functions.Notify(src, 'No player found!', 'error', 3000)
+        TriggerClientEvent('rNotify:NotifyLeft', source, "No player found", "", "", "tick", 4000)
     end
 end)
