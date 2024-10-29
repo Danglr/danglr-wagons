@@ -19,6 +19,7 @@
 
 **_Depencies_**
 - rsg-core
+- rsg-input (will create a repository on my GITHUB
 
  
  ```CONFIG = {}
