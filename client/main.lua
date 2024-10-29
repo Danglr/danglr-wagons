@@ -28,11 +28,12 @@ Citizen.CreateThread(function()
             local wagonPos = GetEntityCoords(spawnedWagon)
             wagonBlip = Citizen.InvokeNative(0x554D9D53F696D002, 1664425300, wagonPos)
             SetBlipSprite(wagonBlip, 874255393)
-            SetBlipScale(wagonBlip, 0.2)
+            SetBlipScale(wagonBlip, 0.1)
             Citizen.InvokeNative(0x9CB1A1623062F402, wagonBlip, 'Owned Wagon')
         end
     end
 end)
+
 -----------------------------------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------------------------------
@@ -94,7 +95,7 @@ Citizen.CreateThread(function()
                         end
                     else
                         --RSGCore.Functions.Notify('You don\'t have any wagon out!', 'error', 3000)
-                        TriggerEvent('rNotify:NotifyLeft', "You have no Wagon out", "", "", "tick", 4000)
+                        TriggerEvent('rNotify:NotifyLeft', "You have no wagon out", "", "", "tick", 4000)
                     end
                 end
             },
@@ -136,6 +137,7 @@ Citizen.CreateThread(function()
                             TriggerServerEvent('danglr-wagons:server:sellwagon', spawnedWagon)
                             DeleteVehicle(spawnedWagon)
                             spawnedWagon = nil
+                            TriggerEvent('rNotify:NotifyLeft', "You sold your wagon", "", "", "tick", 4000)
                         else
                             --RSGCore.Functions.Notify('Your wagon is too far away!', 'error', 3000)
                             TriggerEvent('rNotify:NotifyLeft', "Your wagon is too far away", "", "", "tick", 4000)
@@ -279,7 +281,7 @@ RegisterNetEvent('danglr-wagons:client:wagoninfo', function(data)
             }
         }
     })
-    TriggerEvent('rNotify:NotifyLeft', "You bought a wagon", "Press 'J' to spawn it", "", "tick", 7000)
+    TriggerEvent('rNotify:NotifyLeft', "You bought a wagon", "Make sure to activate it", "", "tick", 7000)
     TriggerServerEvent('danglr-wagons:server:buywagon', info.name, price, model, storage, weight)
 end)
 
@@ -317,10 +319,12 @@ RegisterNetEvent('danglr-wagons:client:ownedwagons', function(storeWagons)
     exports['rsg-menu']:openMenu(menuData)
 end)
 
+
 function HorseInventory()
-    TriggerServerEvent('inventory:server:OpenInventory', 'stash', 'player_' .. wagonid, {
+    TriggerServerEvent('rsg-inventory:server:OpenInventory', 'stash', 'player_' .. wagonid, {
         maxweight = wagonWeight,
         slots = wagonStorage,
     })
-    TriggerEvent('inventory:client:SetCurrentStash', 'player_' .. wagonid)
+    TriggerEvent('rsg-inventory:client:SetCurrentStash', 'player_' .. wagonid)
 end
+
