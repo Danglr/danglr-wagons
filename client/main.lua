@@ -18,6 +18,8 @@ RegisterNetEvent('danglr-wagons:client:updatewagonid', function(wagonid, cid)
     print('Owned CID: ' .. ownedCID)
 end)
 
+---------------------------------------------------------------------------------------------------------------
+--- blip when your wagon is out ---
 Citizen.CreateThread(function()
     while true do
         Wait(100)
@@ -31,7 +33,11 @@ Citizen.CreateThread(function()
         end
     end
 end)
+-----------------------------------------------------------------------------------------------------------------
 
+-----------------------------------------------------------------------------------------------------------------
+--- NPC and LOCATION of wagon seller and the buying menu
+-----------------------------------------------------------------------------------------------------------------
 Citizen.CreateThread(function()
     local model = 'U_M_M_BwmStablehand_01'
 
@@ -79,17 +85,20 @@ Citizen.CreateThread(function()
                         if distance <= 10 then
                             DeleteVehicle(spawnedWagon)
                             spawnedWagon = nil
-                            RSGCore.Functions.Notify('You stored your wagon!', 'success', 3000)
+                            --RSGCore.Functions.Notify('You stored your wagon!', 'success', 3000)
+                            TriggerEvent('rNotify:NotifyLeft', "You stored your wagon", "", "", "tick", 4000)
                             RemoveBlip(wagonBlip)
                         else
-                            RSGCore.Functions.Notify('Your wagon is too far away!', 'error', 3000)
+                            --RSGCore.Functions.Notify('Your wagon is too far away!', 'error', 3000)
+                            TriggerEvent('rNotify:NotifyLeft', "Wagon too far from storage", "", "", "tick", 4000)
                         end
                     else
-                        RSGCore.Functions.Notify('You don\'t have any wagon out!', 'error', 3000)
+                        --RSGCore.Functions.Notify('You don\'t have any wagon out!', 'error', 3000)
+                        TriggerEvent('rNotify:NotifyLeft', "You have no Wagon out", "", "", "tick", 4000)
                     end
                 end
             },
-            {
+            --[[ {
                 icon = '',
                 label = 'Trade Wagon',
                 targeticon = 'fas fa-eye',
@@ -110,7 +119,10 @@ Citizen.CreateThread(function()
                     DeleteVehicle(spawnedWagon)
                     spawnedWagon = nil
                 end
-            },
+            }, ]]
+            ---------------------------------------------------------------------------------------------------------------------------------------
+            ----------- SELLING WAGON CODE --------------
+            ---------------------------------------------------------------------------------------------------------------------------------------
             {
                 icon = '',
                 label = 'Sell Wagon',
@@ -120,15 +132,17 @@ Citizen.CreateThread(function()
                     local distance = GetDistanceBetweenCoords(coords.x, coords.y, coords.z, wagonPos.x, wagonPos.y, wagonPos.z, true)
 
                     if spawnedWagon ~= nil then
-                        if distance <= 10 then
+                        if distance <= 20 then
                             TriggerServerEvent('danglr-wagons:server:sellwagon', spawnedWagon)
                             DeleteVehicle(spawnedWagon)
                             spawnedWagon = nil
                         else
-                            RSGCore.Functions.Notify('Your wagon is too far away!', 'error', 3000)
+                            --RSGCore.Functions.Notify('Your wagon is too far away!', 'error', 3000)
+                            TriggerEvent('rNotify:NotifyLeft', "Your wagon is too far away", "", "", "tick", 4000)
                         end
                     else
-                        RSGCore.Functions.Notify('You don\'t have any wagon out!', 'error', 3000)
+                        --RSGCore.Functions.Notify('You don\'t have any wagon out!', 'error', 3000)
+                        TriggerEvent('rNotify:NotifyLeft', "You dont have a wagon out", "", "", "tick", 4000)
                     end
                 end
             }
@@ -137,9 +151,12 @@ Citizen.CreateThread(function()
 
     local dealerBlip = Citizen.InvokeNative(0x554D9D53F696D002, 1664425300, coords.x, coords.y, coords.z)
     SetBlipSprite(dealerBlip, -1236452613)
-    SetBlipScale(dealerBlip, 0.2)
+    SetBlipScale(dealerBlip, 0.1)
     Citizen.InvokeNative(0x9CB1A1623062F402, dealerBlip, 'Wagon Store')
 end)
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+----------- Keybind for calling wagons out & inventory of wagon keybind & Spawn wagon code
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 Citizen.CreateThread(function()
     while true do
@@ -201,9 +218,12 @@ RegisterNetEvent('danglr-wagons:client:spawnwagon', function(model, ownedCid, sp
     wagonWeight = weight
     wagonid = spawnedwagonid
     spawnedHorseID = spawnedWagon
-
+    TriggerEvent('rNotify:NotifyLeft', "Wagon Spawned", "", "", "tick", 4000)
     TriggerServerEvent('danglr-wagons:server:updatetempwagon', spawnedWagon)
 end)
+----------------------------------------------------------------------------------------------------------------------------------------
+------- Wagon Store Buying Menu --------
+----------------------------------------------------------------------------------------------------------------------------------------
 
 function WagonMenu()
     menuData = {}
@@ -259,7 +279,7 @@ RegisterNetEvent('danglr-wagons:client:wagoninfo', function(data)
             }
         }
     })
-
+    TriggerEvent('rNotify:NotifyLeft', "You bought a wagon", "Press 'J' to spawn it", "", "tick", 7000)
     TriggerServerEvent('danglr-wagons:server:buywagon', info.name, price, model, storage, weight)
 end)
 
